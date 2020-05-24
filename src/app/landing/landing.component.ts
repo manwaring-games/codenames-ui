@@ -46,6 +46,7 @@ export class LandingComponent implements OnInit {
       player.name = this.username.value;
       player.team = Team.None;
       player.id = (Math.floor(Math.random() * 100000) + 1).toString();
+      player.isHost = this.newGame;
       this.sessionService.updatePlayer(player);
 
       let game = new Game();

@@ -3,6 +3,7 @@ import { SessionService } from '../services/session.service';
 import { Player } from '../model/player';
 import { Game } from '../model/game';
 import { Team } from '../model/team';
+import { faCrown } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-lobby',
@@ -10,7 +11,7 @@ import { Team } from '../model/team';
   styleUrls: ['./lobby.component.scss']
 })
 export class LobbyComponent implements OnInit {
-
+  faCrown = faCrown;
   player: Player
   game: Game
   Team = Team;

@@ -16,6 +16,8 @@
                     <ng-container *ngFor="let p of game.players">
                         <tr *ngIf="p.team == Team.Blue">
                             <td>
+                                <fa-icon *ngIf="p.isHost"
+                                    [icon]="faCrown"></fa-icon>
                                 {{p.name}}
                                 <button *ngIf="p.id == player.id" class="btn btn-outline-dark" 
                                     (click)="onTeamSelect(Team.Red)">Switch to Red</button>
@@ -36,9 +38,33 @@
                     <ng-container *ngFor="let p of game.players">
                         <tr *ngIf="p.team == Team.Red">
                             <td>
+                                <fa-icon *ngIf="p.isHost"
+                                    [icon]="faCrown"></fa-icon>
                                 {{p.name}}
                                 <button *ngIf="p.id == player.id" class="btn btn-outline-dark" 
                                     (click)="onTeamSelect(Team.Blue)">Switch to Blue</button>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Undecided</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let p of game.players">
+                        <tr *ngIf="p.team == Team.None">
+                            <td>
+                                <fa-icon *ngIf="p.isHost"
+                                    [icon]="faCrown"></fa-icon>
+                                {{p.name}}
                             </td>
                         </tr>
                     </ng-container>
