@@ -11,7 +11,7 @@ export class LandingComponent implements OnInit {
   @ViewChild('joinGameModal')
   private joinGameModal: TemplateRef<any>;
 
-  gameCodeEntry = new FormControl('');
+  gameCode = new FormControl('');
   username = new FormControl('');
 
   constructor(private modalService: NgbModal) { }
@@ -20,11 +20,11 @@ export class LandingComponent implements OnInit {
   }
 
   onJoinGameClick() {
-    this.modalService.open(this.joinGameModal, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
-      console.log(this.gameCodeEntry.value);
+    this.modalService.open(this.joinGameModal, {ariaLabelledBy: 'modal-basic-title', backdrop: 'static'}).result.then((result) => {
+      console.log(this.gameCode.value);
       console.log(this.username.value);
     }, (reason) => {
-      console.log(this.gameCodeEntry.value);
+      console.log(this.gameCode.value);
       console.log(this.username.value);
     });
   }

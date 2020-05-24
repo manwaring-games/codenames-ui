@@ -2,19 +2,19 @@
     <div>
         Welcome!
     </div>
-    <div>
+    <div class="form-group">
         Join game! Enter game code below, then tap 'Join Game':
-        <div>
-            <input type="text" [formControl]="gameCodeEntry">
+        <div class="input-group">
+            <input type="text" [formControl]="gameCode" class="form-control">
         </div>
-        <div>
-            <button (click)="onJoinGameClick()">Join Game</button>
+        <div class="input-group">
+            <button (click)="onJoinGameClick()" class="btn btn-outline-dark">Join Game</button>
         </div>
     </div>
-    <div>
+    <div class="form-group">
         New game! Tap 'New Game' below:
-        <div>
-            <button>New Game</button>
+        <div class="input-group">
+            <button class="btn btn-outline-dark">New Game</button>
         </div>
     </div>
 </div>
@@ -27,6 +27,7 @@
       </button>
     </div>
     <div class="modal-body">
+        Joining game {{gameCode.value}}
         <div class="form-group">
             <label>Username</label>
             <div class="input-group">
