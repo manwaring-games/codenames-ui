@@ -1,6 +1,10 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { SessionService } from '../services/session.service';
+import { Player } from '../model/player';
+import { Game } from '../model/game';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-landing',
@@ -14,18 +18,40 @@ export class LandingComponent implements OnInit {
   gameCode = new FormControl('');
   username = new FormControl('');
 
-  constructor(private modalService: NgbModal) { }
+  newGame: boolean = false;
+
+  constructor(
+    private modalService: NgbModal,
+    private sessionService:SessionService,
+    private router:Router
+  ) { }
 
   ngOnInit(): void {
   }
 
   onJoinGameClick() {
+    this.openUsernameModal();
+  }
+
+  onNewGameClick() {
+    this.newGame = true;
+    this.gameCode.setValue('QXTPRY');
+    this.openUsernameModal();
+  }
+
+  openUsernameModal() {
     this.modalService.open(this.joinGameModal, {ariaLabelledBy: 'modal-basic-title', backdrop: 'static'}).result.then((result) => {
-      console.log(this.gameCode.value);
-      console.log(this.username.value);
+      let player = new Player();
+      player.name = this.username.value;
+      this.sessionService.player = player;
+
+      let game = new Game();
+      game.code = this.gameCode.value;
+      this.sessionService.game = game;
+
+      this.router.navigate(['/lobby']);
     }, (reason) => {
-      console.log(this.gameCode.value);
-      console.log(this.username.value);
+      console.log('cancelled');
     });
   }
 

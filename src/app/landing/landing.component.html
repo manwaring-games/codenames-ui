@@ -14,7 +14,7 @@
     <div class="form-group">
         New game! Tap 'New Game' below:
         <div class="input-group">
-            <button class="btn btn-outline-dark">New Game</button>
+            <button (click)="onNewGameClick()" class="btn btn-outline-dark">New Game</button>
         </div>
     </div>
 </div>
@@ -27,7 +27,8 @@
       </button>
     </div>
     <div class="modal-body">
-        Joining game {{gameCode.value}}
+        <span *ngIf="!newGame">Joining game {{gameCode.value}}</span>
+        <span *ngIf="newGame">Creating game {{gameCode.value}} - share code with others</span>
         <div class="form-group">
             <label>Username</label>
             <div class="input-group">
@@ -38,4 +39,4 @@
     <div class="modal-footer">
       <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Continue</button>
     </div>
-  </ng-template>
+</ng-template>
