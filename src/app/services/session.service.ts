@@ -8,17 +8,12 @@ import { Game } from '../model/game';
   providedIn: 'root'
 })
 export class SessionService {
-  private playerSource = new BehaviorSubject<Player>(null);
-  player = this.playerSource.asObservable();
+  playerId: string;
   updatePlayer(player:Player) {
-    if (this.gameSource.value)
-    {
       let game = this.gameSource.value;
-      let index = game.players.find(z => z.id == player.id);
+      let index = game.players.find(z => z.id == this.playerId);
       index = player;
       this.gameSource.next(game);
-    }
-    this.playerSource.next(player);
   }
 
   private gameSource = new BehaviorSubject<Game>(null);
