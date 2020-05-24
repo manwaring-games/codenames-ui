@@ -9,12 +9,14 @@ import { LandingComponent } from './landing/landing.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LobbyComponent } from './lobby/lobby.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { ConfirmationComponent } from './confirmation/confirmation.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LandingComponent,
-    LobbyComponent
+    LobbyComponent,
+    ConfirmationComponent
   ],
   imports: [
     BrowserModule,
@@ -25,6 +27,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FontAwesomeModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [
+    ConfirmationComponent
+  ]
 })
 export class AppModule { }

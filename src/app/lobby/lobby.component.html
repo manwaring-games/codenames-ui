@@ -4,6 +4,11 @@
         <button class="btn btn-outline-dark" (click)="onTeamSelect(Team.Blue)">Blue</button> or
         <button class="btn btn-outline-dark" (click)="onTeamSelect(Team.Red)">Red</button>
     </div>
+    <div class="row" *ngIf="player.team != Team.None && player.isHost">
+        <div class="col-sm">
+            <button class="btn btn-outline-dark" (click)="onStartGameClick()">Start Game!</button>
+        </div>
+    </div>
     <div class="row">
         <div class="col-sm">
             <table class="table">

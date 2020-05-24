@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SessionService } from '../services/session.service';
 import { Player } from '../model/player';
 import { Game } from '../model/game';
@@ -55,8 +55,6 @@ export class LandingComponent implements OnInit {
       this.sessionService.updateGame(game);
 
       this.router.navigate(['/lobby']);
-    }, (reason) => {
-      console.log('cancelled');
     });
   }
 
