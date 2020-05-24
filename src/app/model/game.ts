@@ -3,8 +3,7 @@ import { WordCard } from './word-card';
 import { Team } from './team';
 
 export class Game {
-    redPlayers: Player[];
-    bluePlayers: Player[];
+    players: Player[];
     cards: WordCard[];
     id: string;
     turn: Team;

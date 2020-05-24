@@ -5,6 +5,7 @@ import { SessionService } from '../services/session.service';
 import { Player } from '../model/player';
 import { Game } from '../model/game';
 import { Router } from '@angular/router';
+import { Team } from '../model/team';
 
 @Component({
   selector: 'app-landing',
@@ -43,11 +44,14 @@ export class LandingComponent implements OnInit {
     this.modalService.open(this.joinGameModal, {ariaLabelledBy: 'modal-basic-title', backdrop: 'static'}).result.then((result) => {
       let player = new Player();
       player.name = this.username.value;
-      this.sessionService.player = player;
+      player.team = Team.None;
+      player.id = (Math.floor(Math.random() * 100000) + 1).toString();
+      this.sessionService.updatePlayer(player);
 
       let game = new Game();
       game.code = this.gameCode.value;
-      this.sessionService.game = game;
+      game.players = [player];
+      this.sessionService.updateGame(game);
 
       this.router.navigate(['/lobby']);
     }, (reason) => {

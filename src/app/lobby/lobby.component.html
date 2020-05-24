@@ -1,3 +1,49 @@
-<p>lobby works!</p>
-<p>username: {{player.name}}</p>
-<p>game code: {{game.code}}</p>
+<div class="container">
+    <div class="row" *ngIf="player.team == Team.None">
+        {{player.name}}, choose a team
+        <button class="btn btn-outline-dark" (click)="onTeamSelect(Team.Blue)">Blue</button> or
+        <button class="btn btn-outline-dark" (click)="onTeamSelect(Team.Red)">Red</button>
+    </div>
+    <div class="row">
+        <div class="col-sm">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Blue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let p of game.players">
+                        <tr *ngIf="p.team == Team.Blue">
+                            <td>
+                                {{p.name}}
+                                <button *ngIf="p.id == player.id" class="btn btn-outline-dark" 
+                                    (click)="onTeamSelect(Team.Red)">Switch to Red</button>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-sm">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Red</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let p of game.players">
+                        <tr *ngIf="p.team == Team.Red">
+                            <td>
+                                {{p.name}}
+                                <button *ngIf="p.id == player.id" class="btn btn-outline-dark" 
+                                    (click)="onTeamSelect(Team.Blue)">Switch to Blue</button>
+                            </td>
+                        </tr>
+                    </ng-container>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
