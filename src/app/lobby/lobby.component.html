@@ -1,10 +1,10 @@
 <div class="container">
-    <div class="row" *ngIf="player.team == Team.None">
-        {{player.name}}, choose a team
-        <button class="btn btn-outline-dark" (click)="onTeamSelect(Team.Blue)">Blue</button> or
-        <button class="btn btn-outline-dark" (click)="onTeamSelect(Team.Red)">Red</button>
+    <div class="row" *ngIf="!person.team">
+        {{person.name}}, choose a team
+        <button class="btn btn-outline-dark" (click)="onTeamSelect(Team.BLUE)">Blue</button> or
+        <button class="btn btn-outline-dark" (click)="onTeamSelect(Team.RED)">Red</button>
     </div>
-    <div class="row" *ngIf="player.team != Team.None && player.isHost">
+    <div class="row">
         <div class="col-sm">
             <button class="btn btn-outline-dark" (click)="onStartGameClick()">Start Game!</button>
         </div>
@@ -18,15 +18,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let p of game.players">
-                        <tr *ngIf="p.team == Team.Blue">
+                    <ng-container *ngFor="let p of game.people">
+                        <tr *ngIf="p.team == Team.BLUE">
                             <td>
-                                <fa-icon *ngIf="p.isHost" [icon]="faCrown"></fa-icon>
-                                <fa-icon *ngIf="p.isWordMaster" [icon]="faBullhorn"></fa-icon>
+                                <fa-icon *ngIf="p.role == Role.SPYMASTER" [icon]="faBullhorn"></fa-icon>
                                 {{p.name}}
-                                <button *ngIf="p.id == player.id" class="btn btn-outline-dark" 
-                                    (click)="onTeamSelect(Team.Red)">Switch to Red</button>
-                                <button *ngIf="p.id == player.id && !player.isWordMaster" class="btn btn-outline-dark" 
+                                <button *ngIf="p.id == person.id" class="btn btn-outline-dark" 
+                                    (click)="onTeamSelect(Team.RED)">Switch to Red</button>
+                                <button *ngIf="p.id == person.id && person.role == Role.SPY" class="btn btn-outline-dark" 
                                     (click)="onWordMasterSelect()">Be WordMaster</button>
                             </td>
                         </tr>
@@ -42,15 +41,14 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let p of game.players">
-                        <tr *ngIf="p.team == Team.Red">
+                    <ng-container *ngFor="let p of game.people">
+                        <tr *ngIf="p.team == Team.RED">
                             <td>
-                                <fa-icon *ngIf="p.isHost" [icon]="faCrown"></fa-icon>
-                                <fa-icon *ngIf="p.isWordMaster" [icon]="faBullhorn"></fa-icon>
+                                <fa-icon *ngIf="p.role == Role.SPYMASTER" [icon]="faBullhorn"></fa-icon>
                                 {{p.name}}
-                                <button *ngIf="p.id == player.id" class="btn btn-outline-dark" 
-                                    (click)="onTeamSelect(Team.Blue)">Switch to Blue</button>
-                                <button *ngIf="p.id == player.id && !player.isWordMaster" class="btn btn-outline-dark" 
+                                <button *ngIf="p.id == person.id" class="btn btn-outline-dark" 
+                                    (click)="onTeamSelect(Team.BLUE)">Switch to Blue</button>
+                                <button *ngIf="p.id == person.id && person.role == Role.SPY" class="btn btn-outline-dark" 
                                     (click)="onWordMasterSelect()">Be WordMaster</button>
                             </td>
                         </tr>
@@ -68,11 +66,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <ng-container *ngFor="let p of game.players">
-                        <tr *ngIf="p.team == Team.None">
+                    <ng-container *ngFor="let p of game.people">
+                        <tr *ngIf="!p.team">
                             <td>
-                                <fa-icon *ngIf="p.isHost"
-                                    [icon]="faCrown"></fa-icon>
                                 {{p.name}}
                             </td>
                         </tr>

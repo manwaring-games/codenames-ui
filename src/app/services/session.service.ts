@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
-import { Player } from '../model/player';
-import { Game } from '../model/game';
+import { Person, Game, Team, Role } from '@manwaring-games/codenames-common';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionService {
-  playerId: string;
-  updatePlayer(player:Player) {
+  personId: string;
+  updatePerson(person:Person) {
       let game = this.gameSource.value;
-      let index = game.players.find(z => z.id == this.playerId);
-      index = player;
+      let index = game.people.find(z => z.id == this.personId);
+      index = person;
       this.gameSource.next(game);
   }
 

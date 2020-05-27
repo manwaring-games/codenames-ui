@@ -2,10 +2,8 @@ import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SessionService } from '../services/session.service';
-import { Player } from '../model/player';
-import { Game } from '../model/game';
 import { Router } from '@angular/router';
-import { Team } from '../model/team';
+import { Person, Game, Team, Role } from '@manwaring-games/codenames-common';
 
 @Component({
   selector: 'app-landing',
@@ -42,16 +40,23 @@ export class LandingComponent implements OnInit {
 
   openUsernameModal() {
     this.modalService.open(this.joinGameModal, {ariaLabelledBy: 'modal-basic-title', backdrop: 'static'}).result.then((result) => {
-      let player = new Player();
-      player.name = this.username.value;
-      player.team = Team.None;
-      player.id = (Math.floor(Math.random() * 100000) + 1).toString();
-      player.isHost = this.newGame;
-      this.sessionService.playerId = player.id;
+      let person:Person = {
+        id: (Math.floor(Math.random() * 100000) + 1).toString(),
+        name: this.username.value,
+        team: null,
+        role: Role.SPY
+      };
 
-      let game = new Game();
-      game.code = this.gameCode.value;
-      game.players = [player];
+      this.sessionService.personId = person.id;
+
+      let game:Game = {
+        id: (Math.floor(Math.random() * 100000) + 1).toString(),
+        code: this.gameCode.value,
+        started: false,
+        turn: null,
+        tiles: null,
+        people: [person]
+      };
       this.sessionService.updateGame(game);
 
       this.router.navigate(['/lobby']);
