@@ -1,0 +1,6 @@
+{
+    "$schema": "./node_modules/ng-openapi-gen/ng-openapi-gen-schema.json",
+    "input": "https://raw.githubusercontent.com/manwaring-games/codenames-api/main/docs/openapi.yml",
+    "output": "code-gen",
+    "ignoreUnusedModels": false
+  }
