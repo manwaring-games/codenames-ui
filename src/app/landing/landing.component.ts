@@ -45,15 +45,10 @@ export class LandingComponent implements OnInit {
 
       if (this.newGame) {
         this.gameSetupService.newGame(this.username.value).subscribe(response => {
-          this.sessionService.personId = response.people[0].id;
-          this.sessionService.updateGame(response);
           this.router.navigate(['/lobby']);
         });
       } else {
         this.gameSetupService.joinGame(this.gameCode.value, this.username.value).subscribe(response => {
-          let person = response.people.find(z => z.name == this.username.value);
-          this.sessionService.personId = person.id;
-          this.sessionService.updateGame(response);
           this.router.navigate(['/lobby']);
         });
       }

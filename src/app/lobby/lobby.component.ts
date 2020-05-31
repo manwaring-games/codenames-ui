@@ -35,9 +35,7 @@ export class LobbyComponent implements OnInit {
     if (this.person.team != null) {
       const modalRef = this.modalService.open(ConfirmationComponent);
       modalRef.result.then((result) => {
-        this.gameSetupService.changeTeam(team).subscribe(result => {
-          this.sessionService.updateGame(result);
-        });
+        this.gameSetupService.changeTeam(team).subscribe();
       });
 
       const component = modalRef.componentInstance as ConfirmationComponent;
@@ -54,9 +52,7 @@ export class LobbyComponent implements OnInit {
   onWordMasterSelect() {
     const modalRef = this.modalService.open(ConfirmationComponent);
     modalRef.result.then((result) => {
-      this.gameSetupService.changeRole(Role.SPYMASTER).subscribe(result => {
-        this.sessionService.updateGame(result);
-      });
+      this.gameSetupService.changeRole(Role.SPYMASTER).subscribe();
     });
 
     const component = modalRef.componentInstance as ConfirmationComponent;
