@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { SessionService } from '../services/session.service';
 import { Router } from '@angular/router';
 import { Person, Game, Team, Role } from '@manwaring-games/codenames-common';
+import { GameSetupService } from '../services/api/game-setup.service';
 
 @Component({
   selector: 'app-landing',
@@ -22,7 +23,8 @@ export class LandingComponent implements OnInit {
   constructor(
     private modalService: NgbModal,
     private sessionService:SessionService,
-    private router:Router
+    private router:Router,
+    private gameSetupService:GameSetupService
   ) { }
 
   ngOnInit(): void {
@@ -40,7 +42,7 @@ export class LandingComponent implements OnInit {
 
   openUsernameModal() {
     this.modalService.open(this.joinGameModal, {ariaLabelledBy: 'modal-basic-title', backdrop: 'static'}).result.then((result) => {
-      let person:Person = {
+      /*let person:Person = {
         id: (Math.floor(Math.random() * 100000) + 1).toString(),
         name: this.username.value,
         team: null,
@@ -56,10 +58,18 @@ export class LandingComponent implements OnInit {
         turn: null,
         tiles: null,
         people: [person]
-      };
-      this.sessionService.updateGame(game);
-
-      this.router.navigate(['/lobby']);
+      };*/
+      debugger;
+      if (this.newGame) {
+        this.gameSetupService.newGame({name: this.username.value}).subscribe(response => {
+          debugger;
+          this.sessionService.personId = response.people[0].id;
+          this.sessionService.updateGame(response);
+          this.router.navigate(['/lobby']);
+        });
+      } else {
+        window.alert('join game');
+      }
     });
   }
 
