@@ -5,6 +5,8 @@ import { faCrown, faBullhorn } from '@fortawesome/free-solid-svg-icons';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GameSetupService } from '../services/api/game-setup.service';
+import { GameActionsService } from '../services/api/game-actions.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-lobby',
@@ -21,7 +23,9 @@ export class LobbyComponent implements OnInit {
   constructor(
     private sessionService: SessionService,
     private modalService: NgbModal,
-    private gameSetupService: GameSetupService
+    private gameSetupService: GameSetupService,
+    private gameActionsService: GameActionsService,
+    private router:Router
   ) { }
 
   ngOnInit(): void {
@@ -65,7 +69,10 @@ export class LobbyComponent implements OnInit {
   onStartGameClick() {
     const modalRef = this.modalService.open(ConfirmationComponent);
     modalRef.result.then((result) => {
-      window.alert('starting game');
+      //need authentication token?
+      //this.gameActionsService.startGame().subscribe(result => {
+        this.router.navigate(['/game']);
+      //});
     });
 
     const component = modalRef.componentInstance as ConfirmationComponent;

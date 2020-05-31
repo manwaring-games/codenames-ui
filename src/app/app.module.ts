@@ -10,13 +10,15 @@ import { LobbyComponent } from './lobby/lobby.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { HttpClientModule } from '@angular/common/http';
+import { GameComponent } from './game/game.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LandingComponent,
     LobbyComponent,
-    ConfirmationComponent
+    ConfirmationComponent,
+    GameComponent
   ],
   imports: [
     BrowserModule,
