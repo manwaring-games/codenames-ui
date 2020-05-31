@@ -4,6 +4,7 @@ import { Person, Game, Team, Role } from '@manwaring-games/codenames-common';
 import { faCrown, faBullhorn } from '@fortawesome/free-solid-svg-icons';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { GameSetupService } from '../services/api/game-setup.service';
 
 @Component({
   selector: 'app-lobby',
@@ -18,8 +19,9 @@ export class LobbyComponent implements OnInit {
   Role = Role;
 
   constructor(
-    private sessionService:SessionService,
-    private modalService: NgbModal
+    private sessionService: SessionService,
+    private modalService: NgbModal,
+    private gameSetupService: GameSetupService
   ) { }
 
   ngOnInit(): void {
@@ -33,8 +35,10 @@ export class LobbyComponent implements OnInit {
     if (this.person.team != null) {
       const modalRef = this.modalService.open(ConfirmationComponent);
       modalRef.result.then((result) => {
-        this.person.team = team;
-        this.sessionService.updatePerson(this.person);
+        this.gameSetupService.changeTeam(team).subscribe(result => {
+          //this.person.team = team;
+          this.sessionService.updateGame(result);
+        });
       });
 
       const component = modalRef.componentInstance as ConfirmationComponent;

@@ -20,6 +20,9 @@ export class SessionService {
   updateGame(game:Game) {
     this.gameSource.next(game);
   }
+  getGame(): Game {
+    return this.gameSource.value;
+  }
   
   constructor() { }
 }
