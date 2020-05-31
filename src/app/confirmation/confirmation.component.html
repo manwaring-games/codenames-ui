@@ -1,6 +1,6 @@
 <div class="modal-header">
     <h4 class="modal-title">{{titleText}}</h4>
-    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <button type="button" class="close" aria-label="Close" (click)="onNegativeClick()">
         <span aria-hidden="true">&times;</span>
     </button>
 </div>
@@ -8,6 +8,6 @@
     {{bodyText}}
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.dismiss('Close click')">{{negativeText}}</button>
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">{{affirmativeText}}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="onNegativeClick()">{{negativeText}}</button>
+    <button type="button" class="btn btn-outline-dark" (click)="onAffirmativeClick()">{{affirmativeText}}</button>
 </div>

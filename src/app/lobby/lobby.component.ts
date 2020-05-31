@@ -37,28 +37,40 @@ export class LobbyComponent implements OnInit {
 
   onTeamSelect(team:Team.RED|Team.BLUE) {
       const modalRef = this.modalService.open(ConfirmationComponent);
-      modalRef.result.then((result) => {
-        this.gameSetupService.changeTeam(team).subscribe();
-      });
 
       const component = modalRef.componentInstance as ConfirmationComponent;
       component.titleText = 'Please confirm';
       component.bodyText = 'Are you sure you want to switch teams?'
       component.affirmativeText = 'Yes';
       component.negativeText = 'Cancel';
+      component.confirmation$.subscribe(result => {
+        if (result) {
+          this.gameSetupService.changeTeam(team).subscribe(game => {
+            modalRef.close();
+          });
+        } else {
+          modalRef.close();
+        }
+      });
   }
 
   onWordMasterSelect() {
     const modalRef = this.modalService.open(ConfirmationComponent);
-    modalRef.result.then((result) => {
-      this.gameSetupService.changeRole(Role.SPYMASTER).subscribe();
-    });
 
     const component = modalRef.componentInstance as ConfirmationComponent;
     component.titleText = 'Please confirm';
     component.bodyText = 'Are you sure you want to be WordMaster?'
     component.affirmativeText = 'Yes';
     component.negativeText = 'Cancel';
+    component.confirmation$.subscribe(result => {
+      if (result) {
+        this.gameSetupService.changeRole(Role.SPYMASTER).subscribe(game => {
+          modalRef.close();
+        });
+      } else {
+        modalRef.close();
+      }
+    });
   }
 
   onStartGameClick() {
