@@ -26,7 +26,7 @@ export class GameSetupService extends BaseService {
     return this.http.post<Game>(`${this.rootUrl}/games`, body).pipe(
       tap(game => {
         this.sessionService.personId = game.people[0].id;
-        this.sessionService.updateGame(game);
+        this.sessionService.game = game;
       })
     );
   }
@@ -37,23 +37,23 @@ export class GameSetupService extends BaseService {
       tap(game => {
         let person = game.people.find(z => z.name == username);
         this.sessionService.personId = person.id;
-        this.sessionService.updateGame(game);
+        this.sessionService.game = game;
       })
     );
   }
 
   changeTeam(newTeam:Team): Observable<Game> {
-    return this.http.put<Game>(`${this.rootUrl}/games/${this.sessionService.getGame().id}/people/${this.sessionService.personId}/teams/${newTeam}`, null).pipe(
+    return this.http.put<Game>(`${this.rootUrl}/games/${this.sessionService.game.id}/people/${this.sessionService.personId}/teams/${newTeam}`, null).pipe(
       tap(game => {
-        this.sessionService.updateGame(game);
+        this.sessionService.game = game;
       })
     );
   }
 
   changeRole(newRole:Role): Observable<Game> {
-    return this.http.put<Game>(`${this.rootUrl}/games/${this.sessionService.getGame().id}/people/${this.sessionService.personId}/roles/${newRole}`, null).pipe(
+    return this.http.put<Game>(`${this.rootUrl}/games/${this.sessionService.game.id}/people/${this.sessionService.personId}/roles/${newRole}`, null).pipe(
       tap(game => {
-        this.sessionService.updateGame(game);
+        this.sessionService.game = game;
       })
     );
   }

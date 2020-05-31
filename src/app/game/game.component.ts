@@ -18,7 +18,7 @@ export class GameComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.sessionService.game.subscribe(game => {
+    this.sessionService.game$.subscribe(game => {
       this.game = game;
       this.person = game.people.find(z => z.id == this.sessionService.personId);
     })

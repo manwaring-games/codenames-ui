@@ -29,14 +29,13 @@ export class LobbyComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.sessionService.game.subscribe(game => {
+    this.sessionService.game$.subscribe(game => {
       this.game = game;
       this.person = game.people.find(z => z.id == this.sessionService.personId);
     })
   }
 
   onTeamSelect(team:Team.RED|Team.BLUE) {
-    if (this.person.team != null) {
       const modalRef = this.modalService.open(ConfirmationComponent);
       modalRef.result.then((result) => {
         this.gameSetupService.changeTeam(team).subscribe();
@@ -47,10 +46,6 @@ export class LobbyComponent implements OnInit {
       component.bodyText = 'Are you sure you want to switch teams?'
       component.affirmativeText = 'Yes';
       component.negativeText = 'Cancel';
-    } else {
-      this.person.team = team;
-      this.sessionService.updatePerson(this.person);
-    }
   }
 
   onWordMasterSelect() {

@@ -21,9 +21,9 @@ export class GameActionsService extends BaseService {
   }
 
   startGame(): Observable<Game> {
-    return this.http.post<Game>(`${this.rootUrl}/games/${this.sessionService.getGame().id}/start`, null).pipe(
+    return this.http.post<Game>(`${this.rootUrl}/games/${this.sessionService.game.id}/start`, null).pipe(
       tap(game => {
-        this.sessionService.updateGame(game);
+        this.sessionService.game = game;
       })
     );
   }

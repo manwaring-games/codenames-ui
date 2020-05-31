@@ -3,8 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "ng-openapi-gen":"ng-openapi-gen",
-    "generate":"npm run ng-openapi-gen",
+    "ng-openapi-gen": "ng-openapi-gen",
+    "generate": "npm run ng-openapi-gen",
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
@@ -28,6 +28,7 @@
     "@manwaring-games/codenames-common": "0.0.2",
     "@ng-bootstrap/ng-bootstrap": "^6.1.0",
     "bootstrap": "^4.5.0",
+    "js-cookie": "^2.2.1",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
@@ -38,6 +39,7 @@
     "@angular/compiler-cli": "~9.1.9",
     "@types/jasmine": "~3.5.0",
     "@types/jasminewd2": "~2.0.3",
+    "@types/js-cookie": "^2.2.6",
     "@types/node": "^12.11.1",
     "codelyzer": "^5.1.2",
     "jasmine-core": "~3.5.0",
