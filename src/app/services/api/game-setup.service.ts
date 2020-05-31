@@ -18,10 +18,14 @@ export class GameSetupService extends BaseService {
     super(config, http);
   }
 
-  readonly gamesPath = '/games';
+  newGame(username: string): Observable<Game> {
+    const body = {name: username}
+    return this.http.post<Game>(`${this.rootUrl}/games`, body);
+  }
 
-  newGame(createPersonRequest:CreatePersonRequest): Observable<Game> {
-    return this.http.post<Game>(`${this.rootUrl}${this.gamesPath}`, createPersonRequest);
+  joinGame(code: string, username: string): Observable<Game> {
+    const body = {name: username}
+    return this.http.post<Game>(`${this.rootUrl}/games/${code}/people`, body);
   }
 
 }

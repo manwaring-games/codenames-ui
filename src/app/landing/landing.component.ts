@@ -42,33 +42,20 @@ export class LandingComponent implements OnInit {
 
   openUsernameModal() {
     this.modalService.open(this.joinGameModal, {ariaLabelledBy: 'modal-basic-title', backdrop: 'static'}).result.then((result) => {
-      /*let person:Person = {
-        id: (Math.floor(Math.random() * 100000) + 1).toString(),
-        name: this.username.value,
-        team: null,
-        role: Role.SPY
-      };
 
-      this.sessionService.personId = person.id;
-
-      let game:Game = {
-        id: (Math.floor(Math.random() * 100000) + 1).toString(),
-        code: this.gameCode.value,
-        started: false,
-        turn: null,
-        tiles: null,
-        people: [person]
-      };*/
-      debugger;
       if (this.newGame) {
-        this.gameSetupService.newGame({name: this.username.value}).subscribe(response => {
-          debugger;
+        this.gameSetupService.newGame(this.username.value).subscribe(response => {
           this.sessionService.personId = response.people[0].id;
           this.sessionService.updateGame(response);
           this.router.navigate(['/lobby']);
         });
       } else {
-        window.alert('join game');
+        this.gameSetupService.joinGame(this.gameCode.value, this.username.value).subscribe(response => {
+          let person = response.people.find(z => z.name == this.username.value);
+          this.sessionService.personId = person.id;
+          this.sessionService.updateGame(response);
+          this.router.navigate(['/lobby']);
+        });
       }
     });
   }

@@ -1,4 +1,7 @@
 <div class="container">
+    <div class="row">
+        Game code: {{game.code}}
+    </div>
     <div class="row" *ngIf="!person.team">
         {{person.name}}, choose a team
         <button class="btn btn-outline-dark" (click)="onTeamSelect(Team.BLUE)">Blue</button> or
