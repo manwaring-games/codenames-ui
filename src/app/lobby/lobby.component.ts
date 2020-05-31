@@ -36,7 +36,6 @@ export class LobbyComponent implements OnInit {
       const modalRef = this.modalService.open(ConfirmationComponent);
       modalRef.result.then((result) => {
         this.gameSetupService.changeTeam(team).subscribe(result => {
-          //this.person.team = team;
           this.sessionService.updateGame(result);
         });
       });
@@ -55,16 +54,9 @@ export class LobbyComponent implements OnInit {
   onWordMasterSelect() {
     const modalRef = this.modalService.open(ConfirmationComponent);
     modalRef.result.then((result) => {
-      this.game.people.forEach(z => {
-        if (z.team == this.person.team) {
-          if (z.id == this.person.id) {
-            z.role = Role.SPYMASTER;
-          } else {
-            z.role = Role.SPY;
-          }
-        }
+      this.gameSetupService.changeRole(Role.SPYMASTER).subscribe(result => {
+        this.sessionService.updateGame(result);
       });
-      this.sessionService.updateGame(this.game);
     });
 
     const component = modalRef.componentInstance as ConfirmationComponent;

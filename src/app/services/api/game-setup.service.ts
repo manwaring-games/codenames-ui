@@ -34,4 +34,8 @@ export class GameSetupService extends BaseService {
     return this.http.put<Game>(`${this.rootUrl}/games/${this.sessionService.getGame().id}/people/${this.sessionService.personId}/teams/${newTeam}`, null);
   }
 
+  changeRole(newRole:Role): Observable<Game> {
+    return this.http.put<Game>(`${this.rootUrl}/games/${this.sessionService.getGame().id}/people/${this.sessionService.personId}/roles/${newRole}`, null);
+  }
+
 }
