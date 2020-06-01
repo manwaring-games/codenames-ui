@@ -64,12 +64,12 @@ jobs:
             ls
             STRING_BUCKET=$(jq .SiteBucket < infrastructure/.serverless/stack-output/outputs.json)
             BUCKET=$(sed -e 's/^"//' -e 's/"$//' \<<< $STRING_BUCKET)
-            aws s3 sync dist/word-app s3://$BUCKET/ --delete
+            aws s3 sync dist/word-app s3://$BUCKET/ --delete --acl public-read
 
 workflows:
   version: 2
 
-  test:
+  deploy-site:
     jobs:
       # TODO add working tests so that can include this in CI
       # - test
