@@ -1,7 +1,9 @@
 version: 2.1
 orbs:
-  node: circleci/node@2.1.1
+  aws-cli: circleci/aws-cli@1.0.0
   browser-tools: circleci/browser-tools@1.0.0
+  jq: circleci/jq@2.0.1
+  node: circleci/node@3.0.0
 
 jobs:
   
@@ -17,9 +19,64 @@ jobs:
           name: Test
           command: npm test -- --watch=false --progress=false --codeCoverage=true --browsers=ChromeHeadless
 
+  build-site:
+    executor:
+      name: node/default
+      tag: lts
+    steps:
+      - checkout
+      - node/install-packages
+      - run:
+          name: Build site
+          command: npm run build
+      - persist_to_workspace:
+          root: .
+          paths:
+            - dist
+
+  deploy-site-infrastructure:
+    executor:
+      name: node/default
+      tag: lts
+    steps:
+      - checkout
+      - node/install-packages:
+          app-dir: infrastructure
+      - run:
+          name: Deploy site infrastructure
+          command: npm run deploy-infrastructure
+      - persist_to_workspace:
+          root: .
+          paths:
+            - infrastructure/.serverless
+
+  copy-site-assets:
+    executor:
+      name: aws-cli/default
+    steps:
+      - jq/install
+      - aws-cli/setup
+      - attach_workspace:
+          at: .
+      - run:
+          name: Copy assets
+          command: |
+            ls
+            STRING_BUCKET=$(jq .SiteBucket < infrastructure/.serverless/stack-output/outputs.json)
+            BUCKET=$(sed -e 's/^"//' -e 's/"$//' \<<< $STRING_BUCKET)
+            aws s3 sync assets s3://$BUCKET/ --delete
+
 workflows:
   version: 2
 
   test:
     jobs:
-      - test
+      # TODO add working tests so that can include this in CI
+      # - test
+      - build-site
+      - deploy-site-infrastructure:
+          requires: [build-site]
+          context: aws-sandbox
+      - copy-site-assets:
+          requires: [deploy-site-infrastructure]
+          context: aws-sandbox
