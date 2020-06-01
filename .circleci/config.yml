@@ -117,7 +117,6 @@ workflows:
       - deploy-site-infrastructure:
           name: deploy-infra-dev
           stage: dev
-          requires:
           context: aws-sandbox
           filters: *only-main
 
