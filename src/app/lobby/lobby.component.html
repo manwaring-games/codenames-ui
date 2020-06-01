@@ -1,7 +1,9 @@
 <div class="container">
     <div class="row">
-        Game code: <span class="badge badge-light game-code">
-            {{game.code}} <fa-icon [icon]="faLink" class="game-code-link" (click)="onGameCodeLinkClick()"></fa-icon>
+        <span class="game-code-label">Game code:</span> <span class="badge badge-light game-code">
+            {{game.code}} <button class="btn btn-light btn-sm" (click)="onGameCodeLinkClick()">
+                <fa-icon [icon]="faLink"></fa-icon>
+            </button>
         </span>
     </div>
     <div class="row" *ngIf="!person.team">

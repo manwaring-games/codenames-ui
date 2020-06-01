@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GameSetupService } from '../services/api/game-setup.service';
 import { GameActionsService } from '../services/api/game-actions.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-lobby',
@@ -25,7 +26,8 @@ export class LobbyComponent implements OnInit {
     private modalService: NgbModal,
     private gameSetupService: GameSetupService,
     private gameActionsService: GameActionsService,
-    private router:Router
+    private router:Router,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -102,6 +104,7 @@ export class LobbyComponent implements OnInit {
     selBox.select();
     document.execCommand('copy');
     document.body.removeChild(selBox);
+    this.toastr.success('Sharing link copied to clipboard');
   }
 
 }

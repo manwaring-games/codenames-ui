@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -11,6 +12,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { HttpClientModule } from '@angular/common/http';
 import { GameComponent } from './game/game.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -21,13 +23,15 @@ import { GameComponent } from './game/game.component';
     GameComponent
   ],
   imports: [
+    CommonModule,
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     NgbModule,
     ReactiveFormsModule,
     FontAwesomeModule,
-    HttpClientModule
+    HttpClientModule,
+    ToastrModule.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent],
