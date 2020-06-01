@@ -1,6 +1,8 @@
 <div class="container">
     <div class="row">
-        Game code: {{game.code}}
+        Game code: <span class="badge badge-light game-code">
+            {{game.code}} <fa-icon [icon]="faLink" class="game-code-link" (click)="onGameCodeLinkClick()"></fa-icon>
+        </span>
     </div>
     <div class="row" *ngIf="!person.team">
         {{person.name}}, choose a team

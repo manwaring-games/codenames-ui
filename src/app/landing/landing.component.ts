@@ -1,17 +1,18 @@
-import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
+import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { SessionService } from '../services/session.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Person, Game, Team, Role } from '@manwaring-games/codenames-common';
 import { GameSetupService } from '../services/api/game-setup.service';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-landing',
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.scss']
 })
-export class LandingComponent implements OnInit {
+export class LandingComponent implements OnInit, AfterViewInit {
   @ViewChild('joinGameModal')
   private joinGameModal: TemplateRef<any>;
   joinGameModalRef: NgbModalRef;
@@ -23,12 +24,23 @@ export class LandingComponent implements OnInit {
 
   constructor(
     private modalService: NgbModal,
-    private sessionService:SessionService,
-    private router:Router,
-    private gameSetupService:GameSetupService
+    private sessionService: SessionService,
+    private router: Router,
+    private route: ActivatedRoute,
+    private gameSetupService: GameSetupService
   ) { }
 
   ngOnInit(): void {
+  }
+
+  ngAfterViewInit(): void {
+    this.route.paramMap.subscribe(params => {
+      let sharedCode = params.get('id');
+        if (sharedCode) {
+          this.gameCode.setValue(sharedCode);
+          this.onJoinGameClick();
+        }
+    });
   }
 
   onJoinGameClick() {

@@ -1,0 +1,20 @@
+.game-code {
+    line-height: 1.5;
+    border-width: 1px;
+    border-color: #f8f9fa;
+    border-style: solid;
+    .game-code-link:hover {
+        cursor: pointer;
+    }
+}
+.game-code:hover {
+    border-width: 1px;
+    border-color: #555555;
+    border-style: solid;
+}
+.game-code:active {
+    background-color: #888888;
+    border-width: 1px;
+    border-color: #555555;
+    border-style: solid;
+}

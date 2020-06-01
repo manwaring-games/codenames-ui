@@ -7,7 +7,8 @@ import { GameComponent } from './game/game.component';
 const routes: Routes = [
   { path: '', component: LandingComponent },
   { path: 'lobby', component: LobbyComponent },
-  { path: 'game', component: GameComponent }
+  { path: 'game', component: GameComponent },
+  { path: 'join/:id', component: LandingComponent }
 ];
 
 @NgModule({
