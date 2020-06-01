@@ -44,7 +44,7 @@ jobs:
           app-dir: infrastructure
       - run:
           name: Deploy site infrastructure
-          command: npm run deploy-infrastructure
+          command: STAGE=dev npm run deploy-infrastructure
       - persist_to_workspace:
           root: .
           paths:
