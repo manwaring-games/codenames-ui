@@ -64,7 +64,7 @@ jobs:
             ls
             STRING_BUCKET=$(jq .SiteBucket < infrastructure/.serverless/stack-output/outputs.json)
             BUCKET=$(sed -e 's/^"//' -e 's/"$//' \<<< $STRING_BUCKET)
-            aws s3 sync dist s3://$BUCKET/ --delete
+            aws s3 sync dist/word-app s3://$BUCKET/ --delete
 
 workflows:
   version: 2
