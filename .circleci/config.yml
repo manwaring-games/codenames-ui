@@ -12,11 +12,10 @@ jobs:
     steps:
       - checkout
       - node/install-packages
-      - browser-tools/install-chrome
-      - browser-tools/install-chromedriver
+      - browser-tools/install-browser-tools
       - run:
           name: Test
-          command: npm test -- --no-watch --no-progress --browsers=ChromeHeadless
+          command: npm test -- --watch=false --progress=false --codeCoverage=true --browsers=ChromeHeadless
 
 workflows:
   version: 2
