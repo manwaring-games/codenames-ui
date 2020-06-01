@@ -6,7 +6,6 @@ orbs:
   node: circleci/node@3.0.0
 
 jobs:
-  
   test:
     executor:
       name: node/default
@@ -23,12 +22,18 @@ jobs:
     executor:
       name: node/default
       tag: lts
+    parameters:
+      stage:
+        description: Stage this build is targeting
+        type: string
+        default: dev
     steps:
       - checkout
       - node/install-packages
       - run:
           name: Build site
-          command: npm run build
+          command: |
+            npm run build -- --configuration=<< parameters.stage >>
       - persist_to_workspace:
           root: .
           paths:
@@ -38,13 +43,21 @@ jobs:
     executor:
       name: node/default
       tag: lts
+    parameters:
+      stage:
+        description: Stage this infrastructure is for
+        type: string
+        default: ""
     steps:
       - checkout
       - node/install-packages:
           app-dir: infrastructure
       - run:
           name: Deploy site infrastructure
-          command: STAGE=dev npm run deploy-infrastructure
+          command: |
+            STAGE=<< parameters.stage >>
+            [[ ! -z "$STAGE" ]] || STAGE=${CIRCLE_BRANCH%%/*}
+            npm run deploy-infrastructure
       - persist_to_workspace:
           root: .
           paths:
@@ -69,14 +82,52 @@ jobs:
 workflows:
   version: 2
 
-  deploy-site:
+  deploy-branch:
     jobs:
       # TODO add working tests so that can include this in CI
       # - test
+
       - build-site
+
       - deploy-site-infrastructure:
           requires: [build-site]
           context: aws-sandbox
+
       - copy-site-assets:
           requires: [deploy-site-infrastructure]
+          context: aws-sandbox
+
+  deploy-main:
+    jobs:
+      # TODO add working tests so that can include this in CI
+      # - test
+
+      - build-site:
+          name: build-dev
+
+      - deploy-site-infrastructure:
+          name: deploy-infra-dev
+          stage: dev
+          requires: [build-dev]
+          context: aws-sandbox
+
+      - copy-site-assets:
+          name: copy-assets-dev
+          requires: [deploy-infra-dev]
+          context: aws-sandbox
+
+      - build-site:
+          name: build-prod
+          stage: prod
+          requires: [copy-assets-dev]
+
+      - deploy-site-infrastructure:
+          name: deploy-infra-prod
+          stage: prod
+          requires: [build-prod]
+          context: aws-sandbox
+
+      - copy-site-assets:
+          name: copy-assets-prod
+          requires: [deploy-infra-prod]
           context: aws-sandbox

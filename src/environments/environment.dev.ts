@@ -1,0 +1,3 @@
+export const environment = {
+  apiRootUrl: 'https://yeq7szw1ak.execute-api.us-east-1.amazonaws.com/dev',
+};
