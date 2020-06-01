@@ -87,15 +87,21 @@ workflows:
       # TODO add working tests so that can include this in CI
       # - test
 
-      - build-site
+      - build-site:
+          filters: &only-branches
+            branches:
+              ignore: main
 
       - deploy-site-infrastructure:
-          requires: [build-site]
           context: aws-sandbox
+          filters: *only-branches
 
       - copy-site-assets:
-          requires: [deploy-site-infrastructure]
+          requires:
+            - build-site
+            - deploy-site-infrastructure
           context: aws-sandbox
+          filters: *only-branches
 
   deploy-main:
     jobs:
@@ -104,30 +110,44 @@ workflows:
 
       - build-site:
           name: build-dev
+          filters: &only-main
+            branches:
+              only: main
 
       - deploy-site-infrastructure:
           name: deploy-infra-dev
           stage: dev
-          requires: [build-dev]
+          requires:
           context: aws-sandbox
+          filters: *only-main
 
       - copy-site-assets:
           name: copy-assets-dev
-          requires: [deploy-infra-dev]
+          requires:
+            - build-dev
+            - deploy-infra-dev
           context: aws-sandbox
+          filters: *only-main
 
       - build-site:
           name: build-prod
           stage: prod
-          requires: [copy-assets-dev]
+          requires:
+            - copy-assets-dev
+          filters: *only-main
 
       - deploy-site-infrastructure:
           name: deploy-infra-prod
           stage: prod
-          requires: [build-prod]
+          requires:
+            - copy-assets-dev
           context: aws-sandbox
+          filters: *only-main
 
       - copy-site-assets:
           name: copy-assets-prod
-          requires: [deploy-infra-prod]
+          requires:
+            - build-prod
+            - deploy-infra-prod
           context: aws-sandbox
+          filters: *only-main
