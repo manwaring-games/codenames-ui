@@ -77,14 +77,18 @@ export class LobbyComponent implements OnInit {
 
   onStartGameClick() {
     const modalRef = this.modalService.open(ConfirmationComponent);
-    modalRef.result.then((result) => {
-      //need authentication token?
-      //this.gameActionsService.startGame().subscribe(result => {
-        this.router.navigate(['/game']);
-      //});
-    });
 
     const component = modalRef.componentInstance as ConfirmationComponent;
+    component.confirmation$.subscribe(result => {
+      if (result) {
+        this.gameActionsService.startGame().subscribe(result => {
+          modalRef.close();
+          this.router.navigate(['/game']);
+        });
+      } else {
+        modalRef.close();
+      }
+    });
     component.titleText = 'Please confirm';
     component.bodyText = 'Are you sure you want to start the game?'
     component.affirmativeText = 'Yes';
