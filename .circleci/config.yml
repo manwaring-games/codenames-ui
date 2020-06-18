@@ -1,0 +1,152 @@
+version: 2.1
+orbs:
+  aws-cli: circleci/aws-cli@1.0.0
+  browser-tools: circleci/browser-tools@1.0.0
+  jq: circleci/jq@2.0.1
+  node: circleci/node@3.0.0
+
+jobs:
+  test:
+    executor:
+      name: node/default
+      tag: lts
+    steps:
+      - checkout
+      - node/install-packages
+      - browser-tools/install-browser-tools
+      - run:
+          name: Test
+          command: npm test -- --watch=false --progress=false --codeCoverage=true --browsers=ChromeHeadless
+
+  build-site:
+    executor:
+      name: node/default
+      tag: lts
+    parameters:
+      stage:
+        description: Stage this build is targeting
+        type: string
+        default: dev
+    steps:
+      - checkout
+      - node/install-packages
+      - run:
+          name: Build site
+          command: |
+            npm run build -- --configuration=<< parameters.stage >>
+      - persist_to_workspace:
+          root: .
+          paths:
+            - dist
+
+  deploy-site-infrastructure:
+    executor:
+      name: node/default
+      tag: lts
+    parameters:
+      stage:
+        description: Stage this infrastructure is for
+        type: string
+        default: ""
+    steps:
+      - checkout
+      - node/install-packages:
+          app-dir: infrastructure
+      - run:
+          name: Deploy site infrastructure
+          command: |
+            STAGE=<< parameters.stage >>
+            [[ ! -z "$STAGE" ]] || STAGE=${CIRCLE_BRANCH%%/*}
+            npm run deploy-infrastructure
+      - persist_to_workspace:
+          root: .
+          paths:
+            - infrastructure/.serverless
+
+  copy-site-assets:
+    executor:
+      name: aws-cli/default
+    steps:
+      - jq/install
+      - aws-cli/setup
+      - attach_workspace:
+          at: .
+      - run:
+          name: Copy assets
+          command: |
+            ls
+            STRING_BUCKET=$(jq .SiteBucket < infrastructure/.serverless/stack-output/outputs.json)
+            BUCKET=$(sed -e 's/^"//' -e 's/"$//' \<<< $STRING_BUCKET)
+            aws s3 sync dist/word-app s3://$BUCKET/ --delete --acl public-read
+
+workflows:
+  version: 2
+
+  deploy-branch:
+    jobs:
+      # TODO add working tests so that can include this in CI
+      # - test
+
+      - build-site:
+          filters: &only-branches
+            branches:
+              ignore: main
+
+      - deploy-site-infrastructure:
+          context: aws-sandbox
+          filters: *only-branches
+
+      - copy-site-assets:
+          requires:
+            - build-site
+            - deploy-site-infrastructure
+          context: aws-sandbox
+          filters: *only-branches
+
+  deploy-main:
+    jobs:
+      # TODO add working tests so that can include this in CI
+      # - test
+
+      - build-site:
+          name: build-dev
+          filters: &only-main
+            branches:
+              only: main
+
+      - deploy-site-infrastructure:
+          name: deploy-infra-dev
+          stage: dev
+          context: aws-sandbox
+          filters: *only-main
+
+      - copy-site-assets:
+          name: copy-assets-dev
+          requires:
+            - build-dev
+            - deploy-infra-dev
+          context: aws-sandbox
+          filters: *only-main
+
+      - build-site:
+          name: build-prod
+          stage: prod
+          requires:
+            - copy-assets-dev
+          filters: *only-main
+
+      - deploy-site-infrastructure:
+          name: deploy-infra-prod
+          stage: prod
+          requires:
+            - copy-assets-dev
+          context: aws-sandbox
+          filters: *only-main
+
+      - copy-site-assets:
+          name: copy-assets-prod
+          requires:
+            - build-prod
+            - deploy-infra-prod
+          context: aws-sandbox
+          filters: *only-main

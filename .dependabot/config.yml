@@ -1,0 +1,16 @@
+version: 1
+
+update_configs:
+  - package_manager: javascript
+    directory: /
+    update_schedule: live
+    allowed_updates:
+      - match:
+          update_type: security
+
+  - package_manager: javascript
+    directory: infrastructure
+    update_schedule: live
+    allowed_updates:
+      - match:
+          update_type: security
