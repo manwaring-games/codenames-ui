@@ -13,6 +13,7 @@ import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { HttpClientModule } from '@angular/common/http';
 import { GameComponent } from './game/game.component';
 import { ToastrModule } from 'ngx-toastr';
+import { GameCodeLinkComponent } from './game-code-link/game-code-link.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ToastrModule } from 'ngx-toastr';
     LandingComponent,
     LobbyComponent,
     ConfirmationComponent,
-    GameComponent
+    GameComponent,
+    GameCodeLinkComponent
   ],
   imports: [
     CommonModule,

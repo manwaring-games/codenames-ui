@@ -1,10 +1,6 @@
 <div class="container">
     <div class="row">
-        <span class="game-code-label">Game code:</span> <span class="badge badge-light game-code">
-            {{game.code}} <button class="btn btn-light btn-sm" (click)="onGameCodeLinkClick()">
-                <fa-icon [icon]="faLink"></fa-icon>
-            </button>
-        </span>
+        <app-game-code-link [code]="game.code"></app-game-code-link>
     </div>
     <div class="row" *ngIf="!person.team">
         {{person.name}}, choose a team

@@ -1,12 +1,33 @@
 <div class="container">
     <div class="row">
+        <div class="col-sm">
+            Turn: {{game.turns.active == null ? game.startTeam : game.turns.active.team}}
+        </div>
+        <div class="col-sm">
+            <app-game-code-link [code]="game.code"></app-game-code-link>
+        </div>
+    </div>
+    <div class="row">
         <ng-container *ngFor="let tile of game.tiles">
             <div class="card">
-                <div class="card-body">
-                    {{tile.word}} | {{tile.team}} | {{tile.selected}} | {{tile.id}}
+                <div class="card-body" [ngClass]="{
+                    'secret': person.role == Role.SPY && !tile.selected,
+                    'red': tile.selected && tile.team == Team.RED,
+                    'red-spymaster': person.role == Role.SPYMASTER && !tile.selected && tile.team == Team.RED,
+                    'blue': tile.selected && tile.team == Team.BLUE,
+                    'blue-spymaster': person.role == Role.SPYMASTER && !tile.selected && tile.team == Team.BLUE,
+                    'neutral': tile.selected && tile.team == Team.NEUTRAL,
+                    'neutral-spymaster': person.role == Role.SPYMASTER && !tile.selected && tile.team == Team.NEUTRAL,
+                    'assassin': tile.selected && tile.team == Team.ASSASSIN,
+                    'assassin-spymaster': person.role == Role.SPYMASTER && !tile.selected && tile.team == Team.ASSASSIN
+                }">
+                    {{tile.word}} | {{tile.team}} | {{tile.selected}}
                 </div>
             </div>
         </ng-container>
     </div>
+    <div class="row">
+        {{game | json}}
+        {{person | json}}
+    </div>
 </div>
-{{game | json}}
