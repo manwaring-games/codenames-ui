@@ -7,7 +7,9 @@
             <app-game-code-link [code]="game.code"></app-game-code-link>
         </div>
     </div>
-    <div class="row">
+    <div class="row" *ngIf="person.role == Role.SPYMASTER && 
+        ((game.turns.active != null && game.turns.active.team == person.team && game.turns.active.clue == null) ||
+         (game.turns.active == null && game.startTeam == person.team))">
         <div class="col-sm">
             <div class="form-group">
                 Submit # of guesses

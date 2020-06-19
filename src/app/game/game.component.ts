@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { SessionService } from '../services/session.service';
 import { Person, Game, Team, Role } from '@manwaring-games/codenames-common';
 import { FormControl } from '@angular/forms';
+import { ConfirmationComponent } from '../confirmation/confirmation.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { GameActionsService } from '../services/api/game-actions.service';
 
 @Component({
   selector: 'app-game',
@@ -16,7 +19,9 @@ export class GameComponent implements OnInit {
   numGuesses = new FormControl('');
 
   constructor(
-    private sessionService: SessionService
+    private sessionService: SessionService,
+    private modalService: NgbModal,
+    private gameActionsService: GameActionsService
   ) { }
 
   ngOnInit(): void {
@@ -27,7 +32,22 @@ export class GameComponent implements OnInit {
   }
 
   onSubmitGuessesClick() {
-    window.alert(this.numGuesses.value);
+    const modalRef = this.modalService.open(ConfirmationComponent);
+
+      const component = modalRef.componentInstance as ConfirmationComponent;
+      component.titleText = 'Please confirm';
+      component.bodyText = 'Are you sure you want to switch teams?'
+      component.affirmativeText = 'Yes';
+      component.negativeText = 'Cancel';
+      component.confirmation$.subscribe(result => {
+        if (result) {
+          this.gameActionsService.startTurn(this.numGuesses.value, this.person.team).subscribe(game => {
+            modalRef.close();
+          });
+        } else {
+          modalRef.close();
+        }
+      });
   }
 
 }
