@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SessionService } from '../services/session.service';
 import { Person, Game, Team, Role } from '@manwaring-games/codenames-common';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-game',
@@ -12,6 +13,7 @@ export class GameComponent implements OnInit {
   game: Game
   Team = Team;
   Role = Role;
+  numGuesses = new FormControl('');
 
   constructor(
     private sessionService: SessionService
@@ -22,6 +24,10 @@ export class GameComponent implements OnInit {
       this.game = game;
       this.person = game.people.find(z => z.id == this.sessionService.personId);
     })
+  }
+
+  onSubmitGuessesClick() {
+    window.alert(this.numGuesses.value);
   }
 
 }

@@ -14,6 +14,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { GameComponent } from './game/game.component';
 import { ToastrModule } from 'ngx-toastr';
 import { GameCodeLinkComponent } from './game-code-link/game-code-link.component';
+import { OnlyNumberDirective } from './directives/only-number.directive';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { GameCodeLinkComponent } from './game-code-link/game-code-link.component
     LobbyComponent,
     ConfirmationComponent,
     GameComponent,
-    GameCodeLinkComponent
+    GameCodeLinkComponent,
+    OnlyNumberDirective
   ],
   imports: [
     CommonModule,
