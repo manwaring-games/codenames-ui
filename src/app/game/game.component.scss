@@ -2,6 +2,9 @@
     .secret {
         background-color: rgb(255, 225, 187);
     }
+    .secret:hover {
+        cursor: pointer;
+    }
     .red {
         background-color: rgb(255, 0, 0);
     }

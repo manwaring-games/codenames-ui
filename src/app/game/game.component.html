@@ -35,7 +35,7 @@
                     'neutral-spymaster': person.role == Role.SPYMASTER && !tile.selected && tile.team == Team.NEUTRAL,
                     'assassin': tile.selected && tile.team == Team.ASSASSIN,
                     'assassin-spymaster': person.role == Role.SPYMASTER && !tile.selected && tile.team == Team.ASSASSIN
-                }">
+                }" (click)="onTileClick(tile)">
                     {{tile.word}} | {{tile.team}} | {{tile.selected}}
                 </div>
             </div>

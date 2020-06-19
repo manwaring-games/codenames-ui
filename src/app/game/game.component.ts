@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SessionService } from '../services/session.service';
-import { Person, Game, Team, Role } from '@manwaring-games/codenames-common';
+import { Person, Game, Team, Role, Tile } from '@manwaring-games/codenames-common';
 import { FormControl } from '@angular/forms';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -34,20 +34,44 @@ export class GameComponent implements OnInit {
   onSubmitGuessesClick() {
     const modalRef = this.modalService.open(ConfirmationComponent);
 
-      const component = modalRef.componentInstance as ConfirmationComponent;
-      component.titleText = 'Please confirm';
-      component.bodyText = 'Are you sure you want to switch teams?'
-      component.affirmativeText = 'Yes';
-      component.negativeText = 'Cancel';
-      component.confirmation$.subscribe(result => {
-        if (result) {
-          this.gameActionsService.startTurn(this.numGuesses.value, this.person.team).subscribe(game => {
-            modalRef.close();
-          });
-        } else {
+    const component = modalRef.componentInstance as ConfirmationComponent;
+    component.titleText = 'Please confirm';
+    component.bodyText = `Are you sure you want to submit ${this.numGuesses.value}?`
+    component.affirmativeText = 'Yes';
+    component.negativeText = 'Cancel';
+    component.confirmation$.subscribe(result => {
+      if (result) {
+        this.gameActionsService.startTurn(this.numGuesses.value, this.person.team).subscribe(game => {
           modalRef.close();
-        }
-      });
+        });
+      } else {
+        modalRef.close();
+      }
+    });
+  }
+
+  onTileClick(tile:Tile) {
+    //TODO: also check if player is not spymaster
+    if (!tile.selected && 
+      this.game.turns.active != null && 
+      this.game.turns.active.team == this.person.team) {
+        const modalRef = this.modalService.open(ConfirmationComponent);
+
+        const component = modalRef.componentInstance as ConfirmationComponent;
+        component.titleText = 'Please confirm';
+        component.bodyText = `Are you sure you want to guess ${tile.word}?`
+        component.affirmativeText = 'Yes';
+        component.negativeText = 'Cancel';
+        component.confirmation$.subscribe(result => {
+          if (result) {
+            this.gameActionsService.makeGuess(tile).subscribe(game => {
+              modalRef.close();
+            });
+          } else {
+            modalRef.close();
+          }
+        });
+    }
   }
 
 }

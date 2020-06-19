@@ -5,7 +5,7 @@ import { ApiConfiguration } from './api-configuration';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { SessionService } from '../session.service';
-import { Game, Team } from '@manwaring-games/codenames-common';
+import { Game, Team, Tile } from '@manwaring-games/codenames-common';
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +35,17 @@ export class GameActionsService extends BaseService {
       team: team
     };
     return this.http.post<Game>(`${this.rootUrl}/games/${this.sessionService.game.id}/turns`, body).pipe(
+      tap(game => {
+        this.sessionService.game = game;
+      })
+    );
+  }
+
+  makeGuess(tile:Tile): Observable<Game> {
+    let body = {
+      tile: tile.id
+    };
+    return this.http.post<Game>(`${this.rootUrl}/games/${this.sessionService.game.id}/turns/${this.sessionService.game.turns.active.id}/guesses`, body).pipe(
       tap(game => {
         this.sessionService.game = game;
       })
