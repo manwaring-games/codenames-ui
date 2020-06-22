@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import * as Cookies from 'js-cookie';
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
+import { environment } from '../../environments/environment';
 
 import { Person, Game, Team, Role } from '@manwaring-games/codenames-common';
 
@@ -8,6 +10,8 @@ import { Person, Game, Team, Role } from '@manwaring-games/codenames-common';
   providedIn: 'root'
 })
 export class SessionService {
+  private gameWebSocket: WebSocketSubject<Game>;
+
   readonly personIdStorageKey = 'personId';
   private _personId: string;
   get personId(): string {
@@ -16,6 +20,7 @@ export class SessionService {
   set personId(value: string) {
     Cookies.set(this.personIdStorageKey, value);
     this._personId = value;
+    this.trySubscribeToGameUpdates();
   }
 
   readonly gameStorageKey = 'game';
@@ -27,6 +32,7 @@ export class SessionService {
   set game(value: Game) {
     Cookies.set(this.gameStorageKey, value);
     this.gameSource.next(value);
+    this.trySubscribeToGameUpdates();
   }
   
   constructor() {
@@ -41,6 +47,17 @@ export class SessionService {
       if (game) {
         this.gameSource.next(game);
       }
+    }
+    this.trySubscribeToGameUpdates();
+  }
+
+  trySubscribeToGameUpdates() {
+    if (this.personId && this.game && this.gameWebSocket == null) {
+      const webSocketUrl = `${environment.webSocketRootUrl}?personId=${this.personId}&gameId=${this.game.id}`;
+      this.gameWebSocket = webSocket(webSocketUrl);
+      this.gameWebSocket.asObservable().subscribe(result => {
+        this.game = result;
+      });
     }
   }
 }
