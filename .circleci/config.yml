@@ -57,7 +57,7 @@ jobs:
           command: |
             STAGE=<< parameters.stage >>
             [[ ! -z "$STAGE" ]] || STAGE=${CIRCLE_BRANCH%%/*}
-            npm run deploy-infrastructure
+            cd infrastructure && npm run deploy -- --stage $STAGE
       - persist_to_workspace:
           root: .
           paths:
