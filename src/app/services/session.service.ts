@@ -35,7 +35,7 @@ export class SessionService {
   private setGame(value: Game) {
     Cookies.set(this.gameStorageKey, value);
     this.gameSource.next(value);
-    this.trySubscribeToGameUpdates(this.game);
+    this.trySubscribeToGameUpdates(value);
   }
   
   constructor() {

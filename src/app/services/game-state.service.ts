@@ -14,7 +14,9 @@ export class GameStateService {
   ) {
     this.prevGame = sessionService.game;
     sessionService.game$.subscribe(game => {
-      this.checkGameForRelevantChanges(game);
+      if (game) {
+        this.checkGameForRelevantChanges(game);
+      }
     });
   }
 
@@ -28,14 +30,12 @@ export class GameStateService {
   }
 
   private checkGameForRelevantChanges(newGame: Game) {
-    if (this.prevGame.id == newGame.id)
+    if (this.prevGame && this.prevGame.id == newGame.id)
     {
       if (!this.prevGame.started && newGame.started) {
-        debugger;
         this.router.navigate(['/game']);
       }
-    } else {
-      debugger;
+    } else if (newGame.started == false) {
       this.router.navigate(['/lobby']);
     }
 
