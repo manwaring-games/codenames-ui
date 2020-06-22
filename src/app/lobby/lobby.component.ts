@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { SessionService } from '../services/session.service';
 import { Person, Game, Team, Role } from '@manwaring-games/codenames-common';
 import { faCrown, faBullhorn, faLink } from '@fortawesome/free-solid-svg-icons';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
@@ -8,6 +7,7 @@ import { GameSetupService } from '../services/api/game-setup.service';
 import { GameActionsService } from '../services/api/game-actions.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { GameStateService } from '../services/game-state.service';
 
 @Component({
   selector: 'app-lobby',
@@ -22,7 +22,7 @@ export class LobbyComponent implements OnInit {
   Role = Role;
 
   constructor(
-    private sessionService: SessionService,
+    private gameStateService: GameStateService,
     private modalService: NgbModal,
     private gameSetupService: GameSetupService,
     private gameActionsService: GameActionsService,
@@ -31,9 +31,9 @@ export class LobbyComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.sessionService.game$.subscribe(game => {
+    this.gameStateService.game$.subscribe(game => {
       this.game = game;
-      this.person = game.people.find(z => z.id == this.sessionService.personId);
+      this.person = this.gameStateService.person;
     })
   }
 
@@ -83,7 +83,6 @@ export class LobbyComponent implements OnInit {
       if (result) {
         this.gameActionsService.startGame().subscribe(result => {
           modalRef.close();
-          this.router.navigate(['/game']);
         });
       } else {
         modalRef.close();

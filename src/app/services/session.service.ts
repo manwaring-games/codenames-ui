@@ -20,7 +20,7 @@ export class SessionService {
   set personId(value: string) {
     Cookies.set(this.personIdStorageKey, value);
     this._personId = value;
-    this.trySubscribeToGameUpdates();
+    this.trySubscribeToGameUpdates(this.game);
   }
 
   readonly gameStorageKey = 'game';
@@ -30,9 +30,12 @@ export class SessionService {
     return this.gameSource.value;
   }
   set game(value: Game) {
+    this.trySubscribeToGameUpdates(value);
+  }
+  private setGame(value: Game) {
     Cookies.set(this.gameStorageKey, value);
     this.gameSource.next(value);
-    this.trySubscribeToGameUpdates();
+    this.trySubscribeToGameUpdates(this.game);
   }
   
   constructor() {
@@ -48,15 +51,15 @@ export class SessionService {
         this.gameSource.next(game);
       }
     }
-    this.trySubscribeToGameUpdates();
+    this.trySubscribeToGameUpdates(this.game);
   }
 
-  trySubscribeToGameUpdates() {
-    if (this.personId && this.game && this.gameWebSocket == null) {
-      const webSocketUrl = `${environment.webSocketRootUrl}?personId=${this.personId}&gameId=${this.game.id}`;
+  trySubscribeToGameUpdates(value:Game) {
+    if (this.personId && value && (this.game == null || this.game.id != value.id) && this.gameWebSocket == null) {
+      const webSocketUrl = `${environment.webSocketRootUrl}?personId=${this.personId}&gameId=${value.id}`;
       this.gameWebSocket = webSocket(webSocketUrl);
       this.gameWebSocket.asObservable().subscribe(result => {
-        this.game = result;
+        this.setGame(result);
       });
     }
   }

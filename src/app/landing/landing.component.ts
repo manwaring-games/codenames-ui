@@ -1,11 +1,8 @@
 import { Component, OnInit, ViewChild, TemplateRef, AfterViewInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { SessionService } from '../services/session.service';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Person, Game, Team, Role } from '@manwaring-games/codenames-common';
 import { GameSetupService } from '../services/api/game-setup.service';
-import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-landing',
@@ -24,7 +21,6 @@ export class LandingComponent implements OnInit, AfterViewInit {
 
   constructor(
     private modalService: NgbModal,
-    private sessionService: SessionService,
     private router: Router,
     private route: ActivatedRoute,
     private gameSetupService: GameSetupService
@@ -61,12 +57,10 @@ export class LandingComponent implements OnInit, AfterViewInit {
     if (this.newGame) {
       this.gameSetupService.newGame(this.username.value).subscribe(response => {
         this.joinGameModalRef.close();
-        this.router.navigate(['/lobby']);
       });
     } else {
       this.gameSetupService.joinGame(this.gameCode.value, this.username.value).subscribe(response => {
         this.joinGameModalRef.close();
-        this.router.navigate(['/lobby']);
       });
     }
   }
