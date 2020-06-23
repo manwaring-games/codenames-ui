@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { GameStateService } from '../services/game-state.service';
 import { Game, Team, Role } from '@manwaring-games/codenames-common';
-import { faBullhorn, faLink } from '@fortawesome/free-solid-svg-icons';
+import { faBullhorn, faLink, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup } from '@angular/forms';
+import { GameDetails } from '../model/game-details';
 
 @Component({
   selector: 'app-hud',
@@ -12,9 +13,9 @@ import { FormGroup } from '@angular/forms';
 })
 export class HudComponent implements OnInit {
 
-  faBullhorn = faBullhorn;
-  faLink = faLink;
+  faBullhorn = faBullhorn; faLink = faLink; faQuestionCircle = faQuestionCircle;
   game: Game;
+  gameDetails: GameDetails;
   Team = Team;
   Role = Role;
   dummyForm: FormGroup = new FormGroup({});
@@ -27,6 +28,9 @@ export class HudComponent implements OnInit {
   ngOnInit(): void {
     this.gameStateService.game$.subscribe(game => {
       this.game = game;
+    });
+    this.gameStateService.gameDetails$.subscribe(details => {
+      this.gameDetails = details;
     });
   }
 

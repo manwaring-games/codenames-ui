@@ -6,6 +6,8 @@ import { ConfirmationComponent } from '../confirmation/confirmation.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GameActionsService } from '../services/api/game-actions.service';
 import { GameStateService } from '../services/game-state.service';
+import { GameDetails } from '../model/game-details';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-game',
@@ -15,6 +17,7 @@ import { GameStateService } from '../services/game-state.service';
 export class GameComponent implements OnInit {
   person: Person
   game: Game
+  gameDetails: GameDetails;
   Team = Team;
   Role = Role;
   numGuesses = new FormControl('');
@@ -29,6 +32,9 @@ export class GameComponent implements OnInit {
     this.gameStateService.game$.subscribe(game => {
       this.game = game;
       this.person = this.gameStateService.person;
+    });
+    this.gameStateService.gameDetails$.subscribe(details => {
+      this.gameDetails = details;
     });
   }
 
