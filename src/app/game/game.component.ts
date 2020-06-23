@@ -29,7 +29,7 @@ export class GameComponent implements OnInit {
     this.gameStateService.game$.subscribe(game => {
       this.game = game;
       this.person = this.gameStateService.person;
-    })
+    });
   }
 
   onSubmitGuessesClick() {

@@ -13,8 +13,8 @@ import { ConfirmationComponent } from './confirmation/confirmation.component';
 import { HttpClientModule } from '@angular/common/http';
 import { GameComponent } from './game/game.component';
 import { ToastrModule } from 'ngx-toastr';
-import { GameCodeLinkComponent } from './game-code-link/game-code-link.component';
 import { OnlyNumberDirective } from './directives/only-number.directive';
+import { HudComponent } from './hud/hud.component';
 
 @NgModule({
   declarations: [
@@ -23,8 +23,8 @@ import { OnlyNumberDirective } from './directives/only-number.directive';
     LobbyComponent,
     ConfirmationComponent,
     GameComponent,
-    GameCodeLinkComponent,
-    OnlyNumberDirective
+    OnlyNumberDirective,
+    HudComponent
   ],
   imports: [
     CommonModule,

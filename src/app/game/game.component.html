@@ -1,10 +1,8 @@
+<app-hud></app-hud>
 <div class="container">
     <div class="row">
         <div class="col-sm">
             Turn: {{game.turns.active == null ? game.startTeam : game.turns.active.team}}
-        </div>
-        <div class="col-sm">
-            <app-game-code-link [code]="game.code"></app-game-code-link>
         </div>
     </div>
     <div class="row" *ngIf="person.role == Role.SPYMASTER && 

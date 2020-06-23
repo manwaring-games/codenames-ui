@@ -1,7 +1,5 @@
+<app-hud></app-hud>
 <div class="container">
-    <div class="row">
-        <app-game-code-link [code]="game.code"></app-game-code-link>
-    </div>
     <div class="row" *ngIf="!person.team">
         {{person.name}}, choose a team
         <button class="btn btn-outline-dark" (click)="onTeamSelect(Team.BLUE)">Blue</button> or
@@ -24,8 +22,8 @@
                     <ng-container *ngFor="let p of game.people">
                         <tr *ngIf="p.team == Team.BLUE">
                             <td>
-                                <fa-icon *ngIf="p.role == Role.SPYMASTER" [icon]="faBullhorn"></fa-icon>
                                 {{p.name}}
+                                <fa-icon *ngIf="p.role == Role.SPYMASTER" [icon]="faBullhorn"></fa-icon>
                                 <button *ngIf="p.id == person.id" class="btn btn-outline-dark" 
                                     (click)="onTeamSelect(Team.RED)">Switch to Red</button>
                                 <button *ngIf="p.id == person.id && person.role == Role.SPY" class="btn btn-outline-dark" 
@@ -47,8 +45,8 @@
                     <ng-container *ngFor="let p of game.people">
                         <tr *ngIf="p.team == Team.RED">
                             <td>
-                                <fa-icon *ngIf="p.role == Role.SPYMASTER" [icon]="faBullhorn"></fa-icon>
                                 {{p.name}}
+                                <fa-icon *ngIf="p.role == Role.SPYMASTER" [icon]="faBullhorn"></fa-icon>
                                 <button *ngIf="p.id == person.id" class="btn btn-outline-dark" 
                                     (click)="onTeamSelect(Team.BLUE)">Switch to Blue</button>
                                 <button *ngIf="p.id == person.id && person.role == Role.SPY" class="btn btn-outline-dark" 
