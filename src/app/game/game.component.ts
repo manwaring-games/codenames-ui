@@ -5,6 +5,7 @@ import { FormControl } from '@angular/forms';
 import { ConfirmationComponent } from '../confirmation/confirmation.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { GameActionsService } from '../services/api/game-actions.service';
+import { GameStateService } from '../services/game-state.service';
 
 @Component({
   selector: 'app-game',
@@ -19,15 +20,15 @@ export class GameComponent implements OnInit {
   numGuesses = new FormControl('');
 
   constructor(
-    private sessionService: SessionService,
     private modalService: NgbModal,
-    private gameActionsService: GameActionsService
+    private gameActionsService: GameActionsService,
+    private gameStateService: GameStateService
   ) { }
 
   ngOnInit(): void {
-    this.sessionService.game$.subscribe(game => {
+    this.gameStateService.game$.subscribe(game => {
       this.game = game;
-      this.person = game.people.find(z => z.id == this.sessionService.personId);
+      this.person = this.gameStateService.person;
     })
   }
 

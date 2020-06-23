@@ -30,12 +30,9 @@ export class SessionService {
     return this.gameSource.value;
   }
   set game(value: Game) {
-    this.trySubscribeToGameUpdates(value);
-  }
-  private setGame(value: Game) {
     Cookies.set(this.gameStorageKey, value);
-    this.gameSource.next(value);
     this.trySubscribeToGameUpdates(value);
+    this.gameSource.next(value);
   }
   
   constructor() {
@@ -59,7 +56,7 @@ export class SessionService {
       const webSocketUrl = `${environment.webSocketRootUrl}?personId=${this.personId}&gameId=${value.id}`;
       this.gameWebSocket = webSocket(webSocketUrl);
       this.gameWebSocket.asObservable().subscribe(result => {
-        this.setGame(result);
+        this.game = result;
       });
     }
   }
